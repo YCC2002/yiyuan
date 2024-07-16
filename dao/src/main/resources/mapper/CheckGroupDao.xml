@@ -1,0 +1,54 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xncj.dao.CheckGroupDao">
+
+    <insert id="addCheckGroup">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            select last_insert_id()
+        </selectKey>
+        insert into t_checkgroup (code,name,sex,helpCode,remark,attention)
+        values
+        (#{code},#{name},#{sex},#{helpCode},#{remark},#{attention})
+    </insert>
+    <update id="setCheckGroupCheckItem" parameterType="java.util.Map">
+        insert into t_checkgroup_checkitem (checkgroup_id, checkitem_id)
+        values (#{checkgroup_id}, #{checkitem_id})
+    </update>
+    <update id="updateCheckGroup">
+        update t_checkgroup
+        set code=#{code},
+            name=#{name},
+            sex=#{sex},
+            helpCode=#{helpCode},
+            remark=#{remark},
+            attention=#{attention}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findPage" resultType="org.xncj.pojo.CheckGroup">
+        SELECT *
+        FROM `t_checkgroup`
+        <if test="queryString != null and queryString.length > 0">
+            where code like '%${queryString}%' or name like '%${queryString}%' or helpCode like #{queryString}
+        </if>
+    </select>
+    <select id="findCheckGroupCheckItem" resultType="java.lang.Integer">
+        select checkitem_id
+        from t_checkgroup_checkitem
+        where checkgroup_id = #{checkGroupId}
+    </select>
+
+    <delete id="deleteCheckGroup">
+        delete
+        from t_checkgroup
+        where id = #{checkGroupId}
+    </delete>
+
+    <delete id="deleteCheckGroupCheckItem">
+        delete
+        from t_checkgroup_checkitem
+        where checkgroup_id = #{checkGroupId}
+    </delete>
+
+</mapper>

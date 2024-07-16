@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xncj.dao.SetMealDao">
+
+    <insert id="addSetMeal">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            select last_insert_id()
+        </selectKey>
+        insert into t_setmeal
+        (name, code, helpCode, sex, age, price, remark, attention, img,status)
+        values (#{name}, #{code}, #{helpCode}, #{sex}, #{age}, #{price}, #{remark}, #{attention}, #{img},1)
+    </insert>
+
+    <update id="SetmealCheckgroup" parameterType="java.util.Map">
+        insert into t_setmeal_checkgroup (setmeal_id, checkgroup_id)
+        values (#{setmeal_id}, #{checkgroup_id})
+    </update>
+    <select id="findAll" resultType="org.xncj.pojo.CheckGroup">
+        select *
+        from t_checkgroup
+    </select>
+    <select id="findPage" resultType="org.xncj.pojo.Setmeal" parameterType="java.lang.String">
+        SELECT *
+        FROM `t_setmeal`
+        where status = 1
+        <if test="queryString != null and queryString.length > 0">
+            and (code like '%${queryString}%' or name like '%${queryString}%' or helpCode like #{queryString})
+        </if>
+    </select>
+</mapper>

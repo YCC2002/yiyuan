@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xncj.dao.OrderSettingDao">
+
+    <insert id="importOrderSetting" parameterType="org.xncj.pojo.OrderSetting">
+        insert into t_ordersetting(orderDate,number)
+        values(#{orderDate},#{number})
+    </insert>
+    <insert id="addOrderSetting">
+        insert into t_ordersetting(orderDate,number)
+        values(#{orderDate},#{number})
+    </insert>
+    <update id="editNumberByDate" parameterType="java.util.Map">
+        update t_ordersetting set number = #{number} where orderDate = #{orderDate}
+    </update>
+    <select id="findAllOrderSettingVo" resultType="org.xncj.pojo.OrderSetting">
+        select * from t_ordersetting
+    </select>
+    <select id="findNumberByDate" resultType="java.lang.Integer">
+        select number from t_ordersetting where orderDate = #{orderDate}
+    </select>
+</mapper>
